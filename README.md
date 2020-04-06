@@ -1,8 +1,10 @@
 # Firebase Database Cheatsheet
 cheatsheet untuk firebase Database ReactJS
 ***
-## Daftar Isi
-- [Firebase Config](#file-config)
+## Table of Content
+- [Firebase Config](#firebase-config)
+	- [Basic Config](#basic-config)
+	- [Alternative Config](#alternative-config)
 - [Multiple Firebase Project](#multiple-firebase-project)
 - [Retrieve Data](#retieve-data)
   - [`on()`](#on())
@@ -20,6 +22,7 @@ cheatsheet untuk firebase Database ReactJS
   
 
   
+***
 ***
 ## Firebase Config
 
@@ -65,6 +68,7 @@ import firebase from "./firebaseInit";
 const rootRef = firebase.database( ).ref( )
 ```
 ***
+***
 ## Multiple Firebase Project
 ``` jsx
 import firebase from '@firebase/app';
@@ -80,6 +84,7 @@ const configOther = {
 var firebaseOther = firebase.initializeApp(configOther, "other");
 export const rootRefOther = firebaseOther.database().ref()
 ```
+***
 ***
 ## Retrieve Data
 ### `on()` 

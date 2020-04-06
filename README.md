@@ -22,7 +22,7 @@ cheatsheet untuk firebase Database ReactJS
   
 ***
 ## Firebase Config
->### konfigurasi standar 
+
 file `firebaseConfig.jsx`
 ``` jsx
 const config = {
@@ -36,6 +36,7 @@ const config = {
 export default config;
 ```
 ***
+### **Basic Config**
 file `firebaseRef.jsx`
 ``` jsx
 import firebase from '@firebase/app';
@@ -46,7 +47,7 @@ firebase.initializeApp( config );
 export const rootRef = firebase.databas( ).ref( );
 ```
 ***
->### alternatif config untuk beberapa kasus
+### **Alternative Config**
 file `firebaseInit.jsx`
 ``` jsx
 import firebase from "@firebase/app";
@@ -82,7 +83,7 @@ export const rootRefOther = firebaseOther.database().ref()
 ***
 ## Retrieve Data
 ### `on()` 
-menerima data secara realtime
+>menerima data secara realtime
 ``` js
 firebaseRef.on('value', snap => {
 	let tmp = [];

@@ -1,8 +1,9 @@
-# Firebase Cheatsheet
-potongan kode firebase untuk react
+# Firebase Database Cheatsheet
+cheatsheet untuk firebase Database ReactJS
 ***
 ## Daftar Isi
-- [File Config](#file-config)
+- [Firebase Config](#file-config)
+- [Multiple Firebase Project](#multiple-firebase-project)
 - [Retrieve Data](#retieve-data)
   - [`on()`](#on())
   - [`once()`](#once())
@@ -20,24 +21,63 @@ potongan kode firebase untuk react
 
   
 ***
-## File Config
-file `firebaseRef.jsx`
-``` js
-import firebase from 'firebase';
+## Firebase Config
+>### konfigurasi standar 
+file `firebaseConfig.jsx`
+``` jsx
 const config = {
-	apiKey: "",
-	authDomain: "",
-	databaseURL: "",
-	projectId: "",
-	storageBucket: "",
-	messagingSenderId: ""
+	apiKey: "_from_your_firebase_project_", 
+	authDomain: "_from_your_firebase_project_",
+	databaseURL: "_from_your_firebase_project_",
+	projectId: "_from_your_firebase_project_",
+	storageBucket: "_from_your_firebase_project_",
+	messagingSenderId: "_from_your_firebase_project_"
 };
+export default config;
+```
+***
+file `firebaseRef.jsx`
+``` jsx
+import firebase from '@firebase/app';
+import '@firebase/database'; // jika hanya ingin menggunakan firebase database
+import config from './firebaseConfig'
+
 firebase.initializeApp( config );
-export const rootRef = firebase
-	.database( )
-	.ref( );
-export const firebaseRef = rootRef.child( 'CHILD' );
-export const firebaseRef_setCHILD = ( child_key ) => firebaseRef.child( child_key );
+export const rootRef = firebase.databas( ).ref( );
+```
+***
+>### alternatif config untuk beberapa kasus
+file `firebaseInit.jsx`
+``` jsx
+import firebase from "@firebase/app";
+import "@firebase/database"; // jika hanya ingin menggunakan firebase database
+import config from "./firebaseConfig";
+
+export default (!firebase.apps.length
+  ? firebase.initializeApp(config)
+  : firebase.app());
+```
+file `firebaseRef.jsx`
+``` jsx
+import firebase from "./firebaseInit";
+
+const rootRef = firebase.database( ).ref( )
+```
+***
+## Multiple Firebase Project
+``` jsx
+import firebase from '@firebase/app';
+import "@firebase/database"; // jika hanya ingin menggunakan firebase database
+import config from "./firebaseConfig";
+
+firebase.initializeApp( config );
+
+const configOther = {
+    databaseURL: "_from_your_other_firebase_project_"
+};
+
+var firebaseOther = firebase.initializeApp(configOther, "other");
+export const rootRefOther = firebaseOther.database().ref()
 ```
 ***
 ## Retrieve Data

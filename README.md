@@ -1,12 +1,12 @@
 # Firebase Database Cheatsheet
-cheatsheet untuk firebase Database ReactJS
+cheatsheet untuk Firebase Database ReactJS
 ***
 ## Table of Content
 - [Firebase Config](#firebase-config)
 	- [Basic Config](#basic-config)
 	- [Alternative Config](#alternative-config)
 - [Multiple Firebase Project](#multiple-firebase-project)
-- [Retrieve Data](#retieve-data)
+- [Retrieve Data](#retrieve-data)
   - [`on()`](#on())
   - [`once()`](#once())
 - [Functions](#functions)

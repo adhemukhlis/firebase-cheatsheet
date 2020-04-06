@@ -9,7 +9,7 @@ cheatsheet untuk firebase Database ReactJS
 - [Retrieve Data](#retieve-data)
   - [`on()`](#on())
   - [`once()`](#once())
-- [Commands](#Commands)
+- [Functions](#functions)
   - [`push()`](#push())
   - [`set()`](#set())
   - [`update()`](#update())
@@ -19,7 +19,8 @@ cheatsheet untuk firebase Database ReactJS
   - [`Callback`](#callback)
   - [`Promise`](#promise)
 - [Get firebase data key](#get-firebase-data-key)
-  
+- [Online Status](#online-status)
+- [Firebase Queries](#firebase-queries)
 
   
 ***
@@ -89,6 +90,7 @@ export const rootRefOther = firebaseOther.database().ref()
 ## Retrieve Data
 ### `on()` 
 >menerima data secara realtime
+### **Retrieve array data with `on()`**
 ``` js
 firebaseRef.on('value', snap => {
 	let tmp = [];
@@ -106,11 +108,20 @@ firebaseRef.on('value', snap => {
 			...shot.val( )
 		})
 	});
-	this.setState({ master: tmp })
+	console.log( tmp )
 })
 ```
+***
+### **Retrieve specific data with `on()`**
+``` js
+firebaseRef.child( _key_ ).on("value", snap => {
+	console.log( snap.val( ).data1 )
+});
+```
+***
 ### `once()`
-menerima data hanya sekali dan tidak realtime
+>menerima data hanya sekali dan tidak realtime
+### **Retrieve array data with `once()`**
 ```js
 firebaseRef.once('value', snap => {
 	let tmp = [ ];
@@ -128,18 +139,26 @@ firebaseRef.once('value', snap => {
 			...shot.val( )
 		})
 	});
-	this.setState({ master: tmp })
+	console.log( tmp )
 })
 ```
 ***
-## Commands
-perintah yang digunakan untuk memanipulasi database
+### **Retrieve specific data with `once()`**
+``` js
+firebaseRef.child( _key_ ).once("value", snap => {
+	console.log( snap.val( ).data1 )
+});
+```
+***
+***
+## Functions
+
 ### `push()`
-menambahkan data dengan key yang dibuat secara otomatis oleh `firebase`
+>menambahkan data dengan key yang dibuat secara otomatis
 ```js
 PushData = () => {
 	const content = {
-	        data1: null,
+	    data1: null,
 		data2: null,
 		data3: null
 	};
@@ -147,47 +166,43 @@ PushData = () => {
 }
 ```
 ### `set()`
-menambahkan data dengan key yang dibuat secara kustom/primary key yang ada
+>menambahkan data dengan key yang ada
 ```js
-SetData = ( PRIMARY_KEY ) => {
+SetData = ( _PRIMARY_KEY_ ) => {
 	const content = {
 		data1: null,
 		data2: null,
 		data3: null
 	};
-	firebaseRef.child( PRIMARY_KEY ).set(content)
+	firebaseRef.child( _PRIMARY_KEY_ ).set(content)
 }
 ```
 ### `update()`
-memperbarui data dengan primary key yang ada
+>memperbarui data dengan  key yang ada
 ```js
-UpdateData = ( PRIMARY_KEY ) => {
+UpdateData = ( _PRIMARY_KEY_ ) => {
 	const content = {
 		data1: null,
 		data2: null,
 		data3: null
 	};
-        firebaseRef.child( PRIMARY_KEY ).update( content )
+        firebaseRef.child( _PRIMARY_KEY_ ).update( content )
 }
 ```
 ### `delete()`
-menghapus data dengan primary key yang ada
+menghapus data dengan key yang ada
 ```js
-DeleteData = ( PRIMARY_KEY ) => {
-	const content = {
-		data1: null,
-		data2: null,
-		data3: null
-	};
-        tasksRef.child( PRIMARY_KEY ).remove();
+DeleteData = ( _PRIMARY_KEY_ ) => {
+        firebaseRef.child( _PRIMARY_KEY_ ).remove()
 }
 ```
 ***
+***
 ## Checking Data
-mengecek terdapat data atau tidak
+mengecek terdapat data atau tidak meggunakan `.once()`
 ```js
-_Checking = ( info ) => {
-	firebaseRef_setCHILD( info ).once('value', snapshot => {
+Checking = ( _PRIMARY_KEY_ ) => {
+	firebaseRef.child( _PRIMARY_KEY_ ).once('value', snapshot => {
 		if (snapshot.exists( )) {
 			//if exists
 		} else {
@@ -197,36 +212,40 @@ _Checking = ( info ) => {
 }
 ```
 ***
+***
 ## Callback and Promise
-### `Callback`
+
+### **Callback**
+>callback on `.set()`
 ```js
-_Callback = ( ) => {
-        const content = {
+const Callback = ( ) => {
+    const content = {
 		data1: null,
 		data2: null,
 		data3: null
 	};
-	firebaseRef.set(content, 
-                ( error ) => {
-			if ( error ) {
-				//if write fail
-			} else {
-				//if write success
-			}
-		})
+
+	firebaseRef.set(content, ( error ) => {
+		if ( error ) {
+			//if write fail
+		} else {
+			//if write success
+		}
+	})
 }
 ```
-### `Promise`
+### **Promise**
+>promise on `.update()`
 ```js
-_Promise = ( ) => {
+const Promise = ( ) => {
 	const content = {
 		data1: null,
 		data2: null,
 		data3: null
 	};
-	firebaseRef
-		.update( content )
-		.then(( ) => {
+
+	firebaseRef.update( content )
+	.then(( ) => {
 			//if write success
 		})
 		.catch(( error ) => {
@@ -235,41 +254,45 @@ _Promise = ( ) => {
 }
 ```
 ***
+***
 ## Get `firebase` data key
 ```js
 const newPostKey = firebaseRef.child('user').push().key;
 ```
 ***
+***
 ## Online Status
 file `firebaseRef.jsx`
 ```js
-export const connectedRef = rootRef.child('.info/connected');
-export const myConnectionsRef = rootRef.child('player/1/connections');
-export const lastOnlineRef = rootRef.child('player/1/lastOnline');
+export const connectedRef = rootRef.child( 'info/connected' );
+export const myConnectionsRef = rootRef.child( 'player/1/connections' );
+export const lastOnlineRef = rootRef.child( 'player/1/lastOnline' );
 ```
 on `componentWillMount()`
 ```js
 // firebaseRefDC.onDisconnect().set("I disconnected!");
 connectedRef.on('value', (snap)=> {
-         if (snap.val() === true) {
-                // We're connected (or reconnected)! Do anything here that should happen only if online (or on reconnect)
-                 let con = myConnectionsRef.push();
+    if (snap.val() === true) {
+
+        // We're connected (or reconnected)! Do anything here that should happen only if online (or on reconnect)
+        let con = myConnectionsRef.push();
+                     
+        // When I disconnect, remove this device
+    	myConnectionsRef.onDisconnect().set(false);
                       
-                // When I disconnect, remove this device
-                myConnectionsRef.onDisconnect().set(false);
-                      
-                 // Add this device to my connections list
-                 // this value could contain info about the device or a timestamp too
-                myConnectionsRef.set(true);
-                      
-                // When I disconnect, update the last time I was seen online
-                lastOnlineRef.onDisconnect().set(firebase.database.ServerValue.TIMESTAMP);
-        }
+        // Add this device to my connections list
+        // this value could contain info about the device or a timestamp too
+		myConnectionsRef.set(true);
+		              
+        // When I disconnect, update the last time I was seen online
+        lastOnlineRef.onDisconnect().set(firebase.database.ServerValue.TIMESTAMP);
+    }
 });
 ```
 ***
+***
 ## Firebase Queries
-contoh data
+data `mahasiswa`
 ```json
 {
 	"mahasiswa": {
@@ -346,48 +369,55 @@ contoh data
 	}
 }
 ```
-`select mahasiswa dengan id=1`
+***
+>`get mahasiswa dengan id = 1`
 ```js
 firebaseRef.child('mahasiswa').child('1');
 //alternatif
 firebaseRef.child('mahasiswa/1');
 ```
-`select mahasiswa dengan nim=16102201`
+***
+>`get mahasiswa dengan nim = 16102201`
 ```js
 firebaseRef.child('mahasiswa').orderByChild('nim').equalTo(16102201);
 ```
-`select 5 data mahasiswa dari awal`
+***
+>`get 5 data mahasiswa dari awal`
 ```js
 firebaseRef.child('mahasiswa').limitToFirst(5)
 ```
-`select 5 data mahasiswa dari akhir`
+***
+>`get 5 data mahasiswa dari akhir`
 ```js
 firebaseRef.child('mahasiswa').limitToLast(5)
 ```
-`select mahasiswa dengan nama depan "ahmad"`
+***
+>`get mahasiswa dengan nama depan "ahmad"`
 ```js
 firebaseRef.child('mahasiswa').orderByChild('nama').startAt('ahmad').endAt('ahmad\uf8ff')
 ```
-`select mahasiswa dengan semester < 6`
+***
+>`get mahasiswa dengan semester < 6`
 ```js
-firebaseRef.child('mahasiswa').orderByChild('semester').endAt(5)
+firebaseRef.child('mahasiswa').orderByChild('semester').endAt(5) //semester-1
 ```
-`select mahasiswa dengan semester > 4`
+>`get mahasiswa dengan semester > 4`
 ```js
 firebaseRef.child('mahasiswa').orderByChild('semester').startAt(4)
 ```
-`select mahasiswa dengan semester antara 2 dan 6`
+***
+>`get mahasiswa dengan semester antara 2 dan 6`
 ```js
 firebaseRef.child('mahasiswa').orderByChild('semester').startAt(2).endAt(6)
 ```
-`select mahasiswa semester 4 dan prodinya elektro`
+***
+>`get mahasiswa semester 4 dan prodinya elektro`
 ```js
-//belum sempurna
 firebaseRef.child('mahasiswa').orderByChild('semester').equalTo(4).on('value', snap => {
-        snap.forEach(shot => {
-                if(shot.val( ).prodi==='elektro'){
-                        console.log(shot.val( ));
-                }
-        });
+    snap.forEach(shot => {
+        if(shot.val( ).prodi === 'elektro' ){
+            console.log(shot.val( ));
+        }
+    });
 })
 ```

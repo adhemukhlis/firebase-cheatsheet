@@ -156,44 +156,44 @@ firebaseRef.child( _key_ ).once("value", snap => {
 ### `push()`
 >menambahkan data dengan key yang dibuat secara otomatis
 ```js
-PushData = () => {
+const PushData = () => {
 	const content = {
 	    data1: null,
 		data2: null,
 		data3: null
 	};
-	firebaseRef.push(content)
+	firebaseRef.push( content )
 }
 ```
 ### `set()`
 >menambahkan data dengan key yang ada
 ```js
-SetData = ( _PRIMARY_KEY_ ) => {
+const SetData = ( _PRIMARY_KEY_ ) => {
 	const content = {
 		data1: null,
 		data2: null,
 		data3: null
 	};
-	firebaseRef.child( _PRIMARY_KEY_ ).set(content)
+	firebaseRef.child( _PRIMARY_KEY_ ).set( content )
 }
 ```
 ### `update()`
 >memperbarui data dengan  key yang ada
 ```js
-UpdateData = ( _PRIMARY_KEY_ ) => {
+const UpdateData = ( _PRIMARY_KEY_ ) => {
 	const content = {
 		data1: null,
 		data2: null,
 		data3: null
 	};
-        firebaseRef.child( _PRIMARY_KEY_ ).update( content )
+    firebaseRef.child( _PRIMARY_KEY_ ).update( content )
 }
 ```
 ### `delete()`
 menghapus data dengan key yang ada
 ```js
-DeleteData = ( _PRIMARY_KEY_ ) => {
-        firebaseRef.child( _PRIMARY_KEY_ ).remove()
+const DeleteData = ( _PRIMARY_KEY_ ) => {
+    firebaseRef.child( _PRIMARY_KEY_ ).remove()
 }
 ```
 ***
@@ -202,8 +202,8 @@ DeleteData = ( _PRIMARY_KEY_ ) => {
 mengecek terdapat data atau tidak meggunakan `.once()`
 ```js
 Checking = ( _PRIMARY_KEY_ ) => {
-	firebaseRef.child( _PRIMARY_KEY_ ).once('value', snapshot => {
-		if (snapshot.exists( )) {
+	firebaseRef.child( _PRIMARY_KEY_ ).once('value', snap => {
+		if (snap.exists( )) {
 			//if exists
 		} else {
 			//if not
